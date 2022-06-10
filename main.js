@@ -38,16 +38,14 @@ function template(number) {
   `
 }
 function getDirection(numberBoard) {
-  return  DIRECTION = { 
-
+  return (DIRECTION = {
     left: document.getElementById("left" + numberBoard),
     right: document.getElementById("right" + numberBoard),
     up: document.getElementById("up" + numberBoard),
     down: document.getElementById("down" + numberBoard),
-  }
+  })
 }
 function creatGameBoard() {
-
   const container = document.querySelector("#container")
   const templateGame = template(numberBoard)
   const newGameArea = document.createElement("div")
@@ -55,14 +53,11 @@ function creatGameBoard() {
   newGameArea.className = "area"
   newGameArea.innerHTML = templateGame
   container.append(newGameArea)
-
 }
 
 function startEventListeners(boardNumber) {
-
   const startbtn = document.getElementById("startBtn" + boardNumber)
   startbtn.addEventListener("click", () => start(boardNumber))
-
 }
 
 function newGameBoard() {
@@ -73,11 +68,9 @@ function newGameBoard() {
 
 const newAreaBtn = document.querySelector(".newAreaBtn")
 newAreaBtn.addEventListener("click", newGameBoard)
-function createMatrix(gameBoardSize) {
-  return new Array(gameBoardSize)
-    .fill(FREE)
-    .map(() => new Array(gameBoardSize).fill(FREE))
-}
+
+const createMatrix = (gameBoardSize) => new Array(gameBoardSize).fill(FREE).map(() => new Array(gameBoardSize).fill(FREE))
+
 function getRandomFreePosition(GAME_STATUS) {
   const matrix = GAME_STATUS.gameArr
   const x = Math.floor(Math.random() * matrix.length)
@@ -88,16 +81,19 @@ function getRandomFreePosition(GAME_STATUS) {
     return getRandomFreePosition(GAME_STATUS)
   }
 }
+
 function setCharacterInFreePosition(GAME_STATUS, character) {
   const matrix = GAME_STATUS.gameArr
   const [x, y] = getRandomFreePosition(GAME_STATUS)
   matrix[x][y] = character
 }
+
 function setCountCharacter(GAME_STATUS, count, character) {
   for (let i = 0; i < count; i++) {
     setCharacterInFreePosition(GAME_STATUS, character)
   }
 }
+
 function findCordinateOfCharacter(GAME_STATUS, character) {
   const matrix = GAME_STATUS.gameArr
   const cordsCharacter = []
@@ -110,10 +106,12 @@ function findCordinateOfCharacter(GAME_STATUS, character) {
   }
   return cordsCharacter
 }
+
 function isInRange(GAME_STATUS, [x, y]) {
   const matrix = GAME_STATUS.gameArr
   return x >= 0 && x < matrix.length && y >= 0 && y < matrix.length
 }
+
 function getNeighbouringCoordinates(GAME_STATUS, [x, y]) {
   const cells = [
     [x - 1, y],
@@ -123,6 +121,7 @@ function getNeighbouringCoordinates(GAME_STATUS, [x, y]) {
   ]
   return cells.filter(cell => isInRange(GAME_STATUS, cell))
 }
+
 function getRabbitNextToWolfOrFreeBox(GAME_STATUS, [x, y]) {
   const matrix = GAME_STATUS.gameArr
   const sidesWolf = getNeighbouringCoordinates(GAME_STATUS, [x, y])
@@ -144,13 +143,15 @@ function getRabbitNextToWolfOrFreeBox(GAME_STATUS, [x, y]) {
   })
   return result
 }
-const calculateDistance = ([x1, y1], [x2, y2]) =>
-  Math.round(Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)))
+
+const calculateDistance = ([x1, y1], [x2, y2]) => Math.round(Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)))
+
 function getSidesLengthThreeAngle(GAME_STATUS, [x, y], character) {
   const sidesWolf = getRabbitNextToWolfOrFreeBox(GAME_STATUS, [x, y])
   const cordRabbit = findCordinateOfCharacter(GAME_STATUS, character)[0]
   return sidesWolf.map(item => calculateDistance(item, cordRabbit))
 }
+
 function findNearestСell(GAME_STATUS, [x, y], character) {
   const lengthCell = getSidesLengthThreeAngle(GAME_STATUS, [x, y], character)
   const nearestСell = getRabbitNextToWolfOrFreeBox(GAME_STATUS, [x, y])
@@ -158,23 +159,25 @@ function findNearestСell(GAME_STATUS, [x, y], character) {
   const index = lengthCell.indexOf(min)
   return nearestСell[index]
 }
+
 function moveWolfsOnNewBox(GAME_STATUS, character) {
   const matrix = GAME_STATUS.gameArr
   const sideWolfs = findCordinateOfCharacter(
     GAME_STATUS,
     CHARACTER_PARAMS.wolf.name
   )
-  sideWolfs.forEach(item => {
+  sideWolfs.forEach(corditateWolfs => {
     if (GAME_STATUS.theGameContinues === false) {
       return
     } else {
-      const [z, k] = findNearestСell(GAME_STATUS, item, character)
-      const [j, i] = item
+      const [z, k] = findNearestСell(GAME_STATUS, corditateWolfs, character)
+      const [j, i] = corditateWolfs
       matrix[j][i] = FREE
       matrix[z][k] = CHARACTER_PARAMS.wolf.name
     }
   })
 }
+
 function moveRabbit(GAME_STATUS, character, x, y) {
   const matrix = GAME_STATUS.gameArr
   const [rabbitX, rabbitY] = findCordinateOfCharacter(GAME_STATUS, character)[0]
@@ -255,17 +258,27 @@ function gameMovement(GAME_STATUS, character) {
 
 const clearGameBoard = GAME_STATUS => (document.getElementById("gameBoard" + GAME_STATUS.numberBoard).innerHTML = "")
 
-const myGameBoardSize = (GAME_STATUS, boardSize) => (document.getElementById("gameBoard" + GAME_STATUS.numberBoard).style.width = boardSize * 60 + 20 + "px")
+const myGameBoardSize = (GAME_STATUS, boardSize) =>
+  (document.getElementById("gameBoard" + GAME_STATUS.numberBoard).style.width =
+    boardSize * 60 + 20 + "px")
 
 function createLitleDivForCharacter(GAME_STATUS, indexesOfElementsInAMatrix) {
   const litleDiv = document.createElement("div")
   litleDiv.id = indexesOfElementsInAMatrix + GAME_STATUS.numberBoard
   litleDiv.className = "box"
-  document.getElementById("gameBoard" + GAME_STATUS.numberBoard).append(litleDiv)
+  document
+    .getElementById("gameBoard" + GAME_STATUS.numberBoard)
+    .append(litleDiv)
 }
 
-function putСharacterInCell(indexesOfElementsInAMatrix, imgCharacters,GAME_STATUS) {
-  const cellForCharacter = document.getElementById(indexesOfElementsInAMatrix + GAME_STATUS.numberBoard)
+function putСharacterInCell(
+  indexesOfElementsInAMatrix,
+  imgCharacters,
+  GAME_STATUS
+) {
+  const cellForCharacter = document.getElementById(
+    indexesOfElementsInAMatrix + GAME_STATUS.numberBoard
+  )
   const NewAttributeImg = document.createElement("img")
   NewAttributeImg.src = imgCharacters
   cellForCharacter.append(NewAttributeImg)
@@ -280,13 +293,25 @@ function drawGameArea(GAME_STATUS) {
       createLitleDivForCharacter(GAME_STATUS, idCharacter)
       switch (matrix[x][y]) {
         case "rabbit":
-        putСharacterInCell(idCharacter, CHARACTER_PARAMS.rabbit.src, GAME_STATUS)
+          putСharacterInCell(
+            idCharacter,
+            CHARACTER_PARAMS.rabbit.src,
+            GAME_STATUS
+          )
           break
         case "wolf":
-          putСharacterInCell(idCharacter, CHARACTER_PARAMS.wolf.src, GAME_STATUS)
+          putСharacterInCell(
+            idCharacter,
+            CHARACTER_PARAMS.wolf.src,
+            GAME_STATUS
+          )
           break
         case "home":
-          putСharacterInCell(idCharacter, CHARACTER_PARAMS.home.src, GAME_STATUS)
+          putСharacterInCell(
+            idCharacter,
+            CHARACTER_PARAMS.home.src,
+            GAME_STATUS
+          )
           break
         case "ban":
           putСharacterInCell(idCharacter, CHARACTER_PARAMS.ban.src, GAME_STATUS)
@@ -297,21 +322,24 @@ function drawGameArea(GAME_STATUS) {
 }
 
 function gameStatusMessage(GAME_STATUS, status) {
-  document.getElementById("gameBoard" + GAME_STATUS.numberBoard).style.display = "none"
-  document.getElementById("message" + GAME_STATUS.numberBoard).style.display = "block"
+  document.getElementById("gameBoard" + GAME_STATUS.numberBoard).style.display =
+    "none"
+  document.getElementById("message" + GAME_STATUS.numberBoard).style.display =
+    "block"
   if (status === "gameOver") {
-    document.getElementById("message" + GAME_STATUS.numberBoard).innerHTML = "Game Over"
+    document.getElementById("message" + GAME_STATUS.numberBoard).innerHTML =
+      "Game Over"
   } else if (status === "youWon") {
-    document.getElementById("message" + GAME_STATUS.numberBoard).innerHTML = "Congratulations! youWon!"
+    document.getElementById("message" + GAME_STATUS.numberBoard).innerHTML =
+      "Congratulations! youWon!"
   }
 }
 
-const wolfCount = GAME_STATUS =>(CHARACTER_PARAMS.wolf.count = Math.floor((65 * GAME_STATUS.gameArr.length) / 100))
+const wolfCount = GAME_STATUS =>  (CHARACTER_PARAMS.wolf.count = Math.floor((65 * GAME_STATUS.gameArr.length) / 100))
 const banCount = GAME_STATUS =>(CHARACTER_PARAMS.ban.count = Math.floor((45 * GAME_STATUS.gameArr.length) / 100))
-
 function start(numberBoard) {
   document.querySelector(".buttonsDirection" + numberBoard).style.display = "block"
-  document.getElementById("message" + numberBoard).style.display = "flex"
+  document.getElementById("message" + numberBoard).style.display = "none"
   const gameSize = "select" + numberBoard
   const gameBoardSize = parseInt(document.getElementById(gameSize).value)
   const matrix = createMatrix(gameBoardSize)
@@ -321,6 +349,7 @@ function start(numberBoard) {
     TheResultOfTheGame: null,
     numberBoard: numberBoard,
   }
+  clearGameBoard(GAME_STATUS)
   wolfCount(GAME_STATUS)
   banCount(GAME_STATUS)
   Object.values(CHARACTER_PARAMS).map(character =>
@@ -328,6 +357,5 @@ function start(numberBoard) {
   )
   myGameBoardSize(GAME_STATUS, gameBoardSize)
   gameMovement(GAME_STATUS, CHARACTER_PARAMS.rabbit.name)
-  clearGameBoard(GAME_STATUS)
   drawGameArea(GAME_STATUS)
 }
