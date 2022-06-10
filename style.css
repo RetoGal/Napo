@@ -1,5 +1,5 @@
     body {
-        background-image: url("./img/background.jpg");
+        background-color: rgb(104, 150, 150);
     }
     
     .container {
@@ -62,7 +62,7 @@
         width: 300px;
         height: 150px;
         font-size: 36px;
-       color: red;
+        color: rgb(66, 0, 0);
     }
 
 
@@ -98,4 +98,24 @@
 
     .arrowDirection{
     display: none;
+    }
+
+
+    .create_game{
+    display: flex;
+    justify-content: center;
+    
+    }
+
+
+    .newAreaBtn{
+    border: 2px solid #33275e;
+    font-size: 30px;
+    width: 150px;
+    margin: 5px;
+    border-radius: 20px;
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    background-color: rgb(255, 0, 212);
     }
