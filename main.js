@@ -249,9 +249,10 @@ function gameStatusMessage(status) {
   }
 }
 
+const wolfCount = (GAME_STATUS) =>  CHARACTER_PARAMS.wolf.count = Math.floor( (65 * GAME_STATUS.gameArr.length) / 100 )
+const banCount = (GAME_STATUS) => CHARACTER_PARAMS.ban.count = Math.floor((45 * GAME_STATUS.gameArr.length) / 100)
 
-
-function start(){
+  function start(){
   clearGameBoard()
   document.querySelector(".buttons").style.display = "block"
   document.querySelector("#message").style.display = "none"
@@ -264,15 +265,9 @@ function start(){
     TheResultOfTheGame: null,
     gameBoardNumber: 0,
   }
-  CHARACTER_PARAMS.wolf.count = Math.floor(
-    (65 * GAME_STATUS.gameArr.length) / 100
-  )
-  CHARACTER_PARAMS.ban.count = Math.floor(
-    (45 * GAME_STATUS.gameArr.length) / 100
-  )
-  Object.values(CHARACTER_PARAMS).map(character => {
-    setCountCharacter(GAME_STATUS, character.count, character.name)
-  })
+  wolfCount(GAME_STATUS) 
+  banCount(GAME_STATUS) 
+  Object.values(CHARACTER_PARAMS).map(character => setCountCharacter(GAME_STATUS, character.count, character.name))
   myGameBoardSize(gameBoardSize)
   gameMovement(GAME_STATUS, CHARACTER_PARAMS.rabbit.name)
   drawGameArea(GAME_STATUS)
