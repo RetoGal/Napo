@@ -341,9 +341,7 @@ function start(numberBoard) {
   clearGameBoard(GAME_STATUS)
   wolfCount(GAME_STATUS)
   banCount(GAME_STATUS)
-  Object.values(CHARACTER_PARAMS).map(character =>
-    setCountCharacter(GAME_STATUS, character.count, character.name)
-  )
+  Object.values(CHARACTER_PARAMS).map(character =>setCountCharacter(GAME_STATUS, character.count, character.name))
   myGameBoardSize(GAME_STATUS, gameBoardSize)
   gameMovement(GAME_STATUS, CHARACTER_PARAMS.rabbit.name)
   drawGameArea(GAME_STATUS)
