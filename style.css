@@ -1,0 +1,121 @@
+    body {
+        background-color: rgb(104, 150, 150);
+    }
+    
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+
+
+    .startBtn,
+    .select {
+        border: 2px solid #33275e;
+        font-size: 30px;
+        width: 150px;
+        padding: 4px;
+        margin: 20px;
+        border-radius: 20px;
+        background-color: #4D0632;
+        cursor: pointer;
+        text-align: center;
+        color: white;
+    }
+
+    .area{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 25px;
+    }
+
+
+    .gameBoard {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex;
+        background-color: #FFDAFA;
+        border-radius: 30px;
+        padding: 20px;
+    }
+
+    .box {
+        width: 60px;
+        height: 60px;
+        background-color:#ff6d419d;
+        margin: 1px;
+    }
+
+    .box>img {
+
+        width: 60px;
+        height: 60px;
+    }
+
+    .message{
+        display: flex;
+        justify-content: center;
+        margin-left:  100px;
+        width: 300px;
+        height: 150px;
+        font-size: 36px;
+        color: rgb(66, 0, 0);
+    }
+
+
+    .arrow_sides{
+        display: flex;
+        justify-content: center;
+    }
+
+
+    .divUp{
+    display: flex;
+    justify-content: center;
+    }
+
+    .divDown{
+    display: flex;
+    justify-content: center;
+    }
+
+
+    .left, .right, .down, .up{
+        border: 2px solid #33275e;
+        font-size: 30px;
+        width: 150px;
+        margin: 5px;
+        border-radius: 20px;
+        cursor: pointer;
+        text-align: center;
+        color: white;
+        background-color: rgb(255, 0, 212);
+    }
+
+
+    .arrowDirection{
+    display: none;
+    }
+
+
+    .create_game{
+    display: flex;
+    justify-content: center;
+    
+    }
+
+
+    .newAreaBtn{
+    border: 2px solid #33275e;
+    font-size: 30px;
+    width: 150px;
+    margin: 5px;
+    border-radius: 20px;
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    background-color: rgb(255, 0, 212);
+    }
