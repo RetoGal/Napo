@@ -72,11 +72,7 @@ function getRandomFreePosition(GAME_STATUS) {
   const matrix = GAME_STATUS.gameArr
   const x = Math.floor(Math.random() * matrix.length)
   const y = Math.floor(Math.random() * matrix.length)
-  if (matrix[x][y] === FREE) {
-    return [x, y]
-  } else {
-    return getRandomFreePosition(GAME_STATUS)
-  }
+  return matrix[x][y] === FREE ? [x, y] : getRandomFreePosition(GAME_STATUS)
 }
 
 function setCharacterInFreePosition(GAME_STATUS, character) {
@@ -121,20 +117,20 @@ function getRabbitNextToWolfOrFreeBox(GAME_STATUS, [x, y]) {
   const sidesWolf = getNeighbouringCoordinates(GAME_STATUS, [x, y])
   const result = []
   sidesWolf.forEach(freeCell => {
+       const [z, k] = freeCell
     if (GAME_STATUS.theGameContinues === false) {
       return
     } else {
-      const [z, k] = freeCell
-      if (matrix[z][k] === "rabbit") {
-        GAME_STATUS.TheResultOfTheGame = "gameOver"
-        gameStatusMessage(GAME_STATUS, "gameOver")
-        GAME_STATUS.theGameContinues = false
-        return
-      } else if (matrix[z][k] === FREE) {
-        result.push(freeCell)
-      }
-    }
-  })
+           if (matrix[z][k] === "rabbit") {
+            GAME_STATUS.TheResultOfTheGame = "gameOver"
+            gameStatusMessage(GAME_STATUS, "gameOver")
+            GAME_STATUS.theGameContinues = false
+            return
+          } else if (matrix[z][k] === FREE) {
+             result.push(freeCell)
+           }
+        }
+     })
   return result
 }
 
@@ -154,20 +150,17 @@ function findNearestСell(GAME_STATUS, [x, y], character) {
   return nearestСell[index]
 }
 
-function moveWolfsOnNewBox(GAME_STATUS, character) {
+function moveWolvesOnNewBox(GAME_STATUS, character) {
   const matrix = GAME_STATUS.gameArr
-  const sideWolfs = findCordinateOfCharacter(
-    GAME_STATUS,
-    CHARACTER_PARAMS.wolf.name
-  )
-  sideWolfs.forEach(corditateWolfs => {
+  const sideWolves = findCordinateOfCharacter(GAME_STATUS, CHARACTER_PARAMS.wolf.name)
+  sideWolves.forEach(cordinateWolves => {
     if (GAME_STATUS.theGameContinues === false) {
       return
     } else {
-      const [z, k] = findNearestСell(GAME_STATUS, corditateWolfs, character)
-      const [j, i] = corditateWolfs
-      matrix[j][i] = FREE
-      matrix[z][k] = CHARACTER_PARAMS.wolf.name
+      const [Xwolves, Ywolves] = cordinateWolves
+      matrix[Xwolves][Ywolves] = FREE
+      const [XnearestСell, YnearestСell] = findNearestСell(GAME_STATUS, cordinateWolves, character)
+      matrix[XnearestСell][YnearestСell] = CHARACTER_PARAMS.wolf.name
     }
   })
 }
@@ -192,7 +185,7 @@ function moveRabbit(GAME_STATUS, character, x, y) {
     matrix[x][y] = CHARACTER_PARAMS.ban.name
     matrix[rabbitX][rabbitY] = character
   }
-  moveWolfsOnNewBox(GAME_STATUS, character)
+  moveWolvesOnNewBox(GAME_STATUS, character)
 }
 
 function gameMovement(GAME_STATUS, character) {
@@ -204,10 +197,8 @@ function gameMovement(GAME_STATUS, character) {
       const matrix = GAME_STATUS.gameArr
       const [x, y] = findCordinateOfCharacter(GAME_STATUS, character)[0]
       let newX = x
-      let newY = y + 1
-      if (y === matrix.length - 1) {
-        newY = 0
-      }
+      let newY = y
+      y === matrix.length - 1 ? newY = 0 : newY = y + 1
       moveRabbit(GAME_STATUS, character, newX, newY)
       drawGameArea(GAME_STATUS)
     }
@@ -217,10 +208,8 @@ function gameMovement(GAME_STATUS, character) {
       const matrix = GAME_STATUS.gameArr
       const [x, y] = findCordinateOfCharacter(GAME_STATUS, character)[0]
       let newX = x
-      let newY = y - 1
-      if (y === 0) {
-        newY = matrix.length - 1
-      }
+      let newY = y 
+      y === 0 ? newY = matrix.length - 1 : newY = y - 1
       moveRabbit(GAME_STATUS, character, newX, newY)
       drawGameArea(GAME_STATUS)
     }
@@ -228,11 +217,9 @@ function gameMovement(GAME_STATUS, character) {
     direction.up.onclick = () => {
       const matrix = GAME_STATUS.gameArr
       const [x, y] = findCordinateOfCharacter(GAME_STATUS, character)[0]
-      let newX = x - 1
+      let newX = x 
       let newY = y
-      if (x === 0) {
-        newX = matrix.length - 1
-      }
+      x === 0 ? newX = matrix.length - 1 : newX = x - 1
       moveRabbit(GAME_STATUS, character, newX, newY)
       drawGameArea(GAME_STATUS)
     }
@@ -240,11 +227,9 @@ function gameMovement(GAME_STATUS, character) {
     direction.down.onclick = () => {
       const matrix = GAME_STATUS.gameArr
       const [x, y] = findCordinateOfCharacter(GAME_STATUS, character)[0]
-      let newX = x + 1
+      let newX = x
       let newY = y
-      if (x === matrix.length - 1) {
-        newX = 0
-      }
+      x === matrix.length - 1 ? newX = 0 : newX = x + 1
       moveRabbit(GAME_STATUS, character, newX, newY)
       drawGameArea(GAME_STATUS)
     }
@@ -346,4 +331,3 @@ function start(numberBoard) {
   gameMovement(GAME_STATUS, CHARACTER_PARAMS.rabbit.name)
   drawGameArea(GAME_STATUS)
 }
-
