@@ -193,46 +193,27 @@ function gameMovement(GAME_STATUS, character) {
     return
   } else {
     const direction = getDirection(GAME_STATUS.numberBoard)
-    direction.right.onclick = () => {
-      const matrix = GAME_STATUS.gameArr
-      const [x, y] = findCordinateOfCharacter(GAME_STATUS, character)[0]
-      let newX = x
-      let newY = y
-      y === matrix.length - 1 ? newY = 0 : newY = y + 1
-      moveRabbit(GAME_STATUS, character, newX, newY)
-      drawGameArea(GAME_STATUS)
-    }
+    Object.values(direction).map(arrow=>{
+        arrow.onclick = () => {
+        const matrix = GAME_STATUS.gameArr
+        const [x, y] = findCordinateOfCharacter(GAME_STATUS, character)[0]
+        let newX = x
+        let newY = y
+        if(arrow.id === "left" + GAME_STATUS.numberBoard ){
+          y === 0 ? newY = matrix.length - 1 : newY = y - 1
+        }else if(arrow.id === "right" + GAME_STATUS.numberBoard ){
+          y === matrix.length - 1 ? newY = 0 : newY = y + 1
+        }else if(arrow.id === "up" + GAME_STATUS.numberBoard){
+          x === 0 ? newX = matrix.length - 1 : newX = x - 1
+        }else if(arrow.id === "down" + GAME_STATUS.numberBoard){
+          x === matrix.length - 1 ? newX = 0 : newX = x + 1
+        }
+        
+        moveRabbit(GAME_STATUS, character, newX, newY)
+        drawGameArea(GAME_STATUS)
+        }
+    })
 
-    direction.left.onclick = () => {
-      
-      const matrix = GAME_STATUS.gameArr
-      const [x, y] = findCordinateOfCharacter(GAME_STATUS, character)[0]
-      let newX = x
-      let newY = y 
-      y === 0 ? newY = matrix.length - 1 : newY = y - 1
-      moveRabbit(GAME_STATUS, character, newX, newY)
-      drawGameArea(GAME_STATUS)
-    }
-
-    direction.up.onclick = () => {
-      const matrix = GAME_STATUS.gameArr
-      const [x, y] = findCordinateOfCharacter(GAME_STATUS, character)[0]
-      let newX = x 
-      let newY = y
-      x === 0 ? newX = matrix.length - 1 : newX = x - 1
-      moveRabbit(GAME_STATUS, character, newX, newY)
-      drawGameArea(GAME_STATUS)
-    }
-
-    direction.down.onclick = () => {
-      const matrix = GAME_STATUS.gameArr
-      const [x, y] = findCordinateOfCharacter(GAME_STATUS, character)[0]
-      let newX = x
-      let newY = y
-      x === matrix.length - 1 ? newX = 0 : newX = x + 1
-      moveRabbit(GAME_STATUS, character, newX, newY)
-      drawGameArea(GAME_STATUS)
-    }
   }
 }
 
