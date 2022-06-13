@@ -6,7 +6,7 @@ const CHARACTER_PARAMS = {
 }
 const FREE = 0
 let numberBoard = 0
-function template( number ) {
+function template( number) {
   return `
   <div class="area" id="${"area" + number}">
        <button class="startBtn" id="${"startBtn" + number}">START</button>
@@ -273,16 +273,12 @@ function drawGameArea(GAME_STATUS) {
 }
 
 function gameStatusMessage(GAME_STATUS, status) {
-  document.getElementById("gameBoard" + GAME_STATUS.numberBoard).style.display =
-    "none"
-  document.getElementById("message" + GAME_STATUS.numberBoard).style.display =
-    "block"
+  document.getElementById("gameBoard" + GAME_STATUS.numberBoard).style.display = "none"
+  document.getElementById("message" + GAME_STATUS.numberBoard).style.display = "block"
   if (status === "gameOver") {
-    document.getElementById("message" + GAME_STATUS.numberBoard).innerHTML =
-      "Game Over"
+    document.getElementById("message" + GAME_STATUS.numberBoard).innerHTML = "Game Over"
   } else if (status === "youWon") {
-    document.getElementById("message" + GAME_STATUS.numberBoard).innerHTML =
-      "Congratulations! youWon!"
+    document.getElementById("message" + GAME_STATUS.numberBoard).innerHTML = "Congratulations! youWon!"
   }
 }
 
