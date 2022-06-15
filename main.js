@@ -153,7 +153,7 @@ function getRabbitNextToWolf(GAME_STATUS, [x, y]){
             GAME_STATUS.theResultOfTheGame = "gameOver"
             return
           }
-}
+      }  
   })
 }
 const calculateDistance = ([x1, y1], [x2, y2]) =>
@@ -178,10 +178,7 @@ function findNearestСell(GAME_STATUS, [x, y], character) {
 
 function moveWolvesOnNewBox(GAME_STATUS, character) {
   const matrix = GAME_STATUS.gameArr
-  const sideWolves = getCordinatesOfCharacter(
-    GAME_STATUS,
-    CHARACTER_PARAMS.wolf.name
-  )
+  const sideWolves = getCordinatesOfCharacter(GAME_STATUS, CHARACTER_PARAMS.wolf.name)
 
   sideWolves.forEach(cordinateWolves => {
     
@@ -219,7 +216,7 @@ function moveRabbit(GAME_STATUS, character, x, y) {
 function drawMessage(GAME_STATUS){
   if(GAME_STATUS.theResultOfTheGame !== null){
     GAME_STATUS.theGameContinues = false
-    gameStatusMessage(GAME_STATUS, GAME_STATUS.theResultOfTheGame)
+    gameStatusMessage(GAME_STATUS)
  }
 }
 
@@ -274,9 +271,7 @@ function createLitleDivForCharacter(GAME_STATUS, indexesOfElementsInAMatrix) {
   const litleDiv = document.createElement("div")
   litleDiv.id = indexesOfElementsInAMatrix + GAME_STATUS.numberBoard
   litleDiv.className = "box"
-  document
-    .getElementById("gameBoard" + GAME_STATUS.numberBoard)
-    .append(litleDiv)
+  document.getElementById("gameBoard" + GAME_STATUS.numberBoard).append(litleDiv)
 }
 
 function putСharacterInCell( indexesOfElementsInAMatrix, imgCharacters, GAME_STATUS ) {
@@ -312,34 +307,23 @@ function drawGameArea(GAME_STATUS) {
   drawMessage(GAME_STATUS)
 }
 
-function gameStatusMessage(GAME_STATUS, status) {
-  document.getElementById("gameBoard" + GAME_STATUS.numberBoard).style.display =
-    "none"
-  document.getElementById("message" + GAME_STATUS.numberBoard).style.display =
-    "block"
-  if (status === "gameOver") {
-    document.getElementById("message" + GAME_STATUS.numberBoard).innerHTML =
-      "Game Over"
-  } else if (status === "youWon") {
-    document.getElementById("message" + GAME_STATUS.numberBoard).innerHTML =
-      "Congratulations! youWon!"
+function gameStatusMessage(GAME_STATUS) {
+  document.getElementById("gameBoard" + GAME_STATUS.numberBoard).style.display = "none"
+  document.getElementById("message" + GAME_STATUS.numberBoard).style.display = "block"
+  if (GAME_STATUS.theResultOfTheGame === "gameOver") {
+    document.getElementById("message" + GAME_STATUS.numberBoard).innerHTML = "Game Over"
+  } else if (GAME_STATUS.theResultOfTheGame  === "youWon") {
+    document.getElementById("message" + GAME_STATUS.numberBoard).innerHTML = "Congratulations! youWon!"
   }
 }
 
-const wolfCount = GAME_STATUS =>
-  (CHARACTER_PARAMS.wolf.count = Math.floor(
-    (65 * GAME_STATUS.gameArr.length) / 100
-  ))
-const banCount = GAME_STATUS =>
-  (CHARACTER_PARAMS.ban.count = Math.floor(
-    (45 * GAME_STATUS.gameArr.length) / 100
-  ))
+const wolfCount = GAME_STATUS => (CHARACTER_PARAMS.wolf.count = Math.floor((65 * GAME_STATUS.gameArr.length) / 100))
+const banCount = GAME_STATUS => (CHARACTER_PARAMS.ban.count = Math.floor((45 * GAME_STATUS.gameArr.length) / 100))
 
 function start(numberBoard) {
   document.getElementById("gameBoard" + numberBoard).style.display = "flex"
   document.getElementById("message" + numberBoard).style.display = "none"
-  document.querySelector(".buttonsDirection" + numberBoard).style.display =
-    "block"
+  document.querySelector(".buttonsDirection" + numberBoard).style.display = "block"
   const gameSize = "select" + numberBoard
   const gameBoardSize = parseInt(document.getElementById(gameSize).value)
   const matrix = createMatrix(gameBoardSize)
