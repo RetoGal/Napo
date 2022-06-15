@@ -144,8 +144,8 @@ function getFreeBoxNextToWolf(GAME_STATUS, [x, y]) {
 function getRabbitNextToWolf(GAME_STATUS, [x, y]){
   const matrix = GAME_STATUS.gameArr
   const sidesWolf = getNeighbouringCoordinates(GAME_STATUS, [x, y])
-  sidesWolf.forEach(freeCell => {
-       const [x, y] = freeCell
+  sidesWolf.forEach(freeCell => { 
+    const [x, y] = freeCell
     if (GAME_STATUS.theGameContinues === false) {
       return
     } else {
@@ -214,7 +214,7 @@ function moveRabbit(GAME_STATUS, character, x, y) {
 
 
 function drawMessage(GAME_STATUS){
-  if(GAME_STATUS.theResultOfTheGame !== null){
+  if(GAME_STATUS.theResultOfTheGame !== ""){
     GAME_STATUS.theGameContinues = false
     gameStatusMessage(GAME_STATUS)
  }
@@ -330,7 +330,7 @@ function start(numberBoard) {
   const GAME_STATUS = {
     gameArr: matrix,
     theGameContinues: true,
-    theResultOfTheGame: null,
+    theResultOfTheGame: "",
     numberBoard: numberBoard,
   }
 
@@ -339,9 +339,7 @@ function start(numberBoard) {
   moveIntervalWolves(GAME_STATUS, CHARACTER_PARAMS.rabbit.name)
   wolfCount(GAME_STATUS)
   banCount(GAME_STATUS)
-  Object.values(CHARACTER_PARAMS).map(character =>
-    setCountCharacter(GAME_STATUS, character.count, character.name)
-  )
+  Object.values(CHARACTER_PARAMS).map(character => setCountCharacter(GAME_STATUS, character.count, character.name))
   myGameBoardSize(GAME_STATUS, gameBoardSize)
   gameMovement(GAME_STATUS, CHARACTER_PARAMS.rabbit.name)
   drawGameArea(GAME_STATUS)
