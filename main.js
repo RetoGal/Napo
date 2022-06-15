@@ -93,7 +93,7 @@ function setCountCharacter(GAME_STATUS, count, character) {
   }
 }
 
-function findCordinateOfCharacter(GAME_STATUS, character) {
+function getCordinatesOfCharacter(GAME_STATUS, character) {
   const matrix = GAME_STATUS.gameArr
   const cordsCharacter = []
   for (let x = 0; x < matrix.length; x++) {
@@ -122,68 +122,85 @@ function getNeighbouringCoordinates(GAME_STATUS, [x, y]) {
   return cells.filter(cell => isInRange(GAME_STATUS, cell))
 }
 
-function getRabbitNextToWolfOrFreeBox(GAME_STATUS, [x, y]) {
+function getFreeBoxNextToWolf(GAME_STATUS, [x, y]) {
   const matrix = GAME_STATUS.gameArr
   const sidesWolf = getNeighbouringCoordinates(GAME_STATUS, [x, y])
   const result = []
   sidesWolf.forEach(freeCell => {
-    const [wolfNextDoorX, wolfNextDoorY] = freeCell
+    const [x, y] = freeCell
 
     if (GAME_STATUS.theGameContinues === false) {
       return
-    } else {
-      if (matrix[wolfNextDoorX][wolfNextDoorY] === "rabbit") {
-        GAME_STATUS.TheResultOfTheGame = "gameOver"
-        gameStatusMessage(GAME_STATUS, "gameOver")
-        GAME_STATUS.theGameContinues = false
-        return
-      } else if (matrix[wolfNextDoorX][wolfNextDoorY] === FREE) {
+    }  else  {
+      if((matrix[x][y] === FREE) ){
         result.push(freeCell)
       }
-    }
+   }
+    
   })
   return result
 }
 
+function getRabbitNextToWolf(GAME_STATUS, [x, y]){
+  const matrix = GAME_STATUS.gameArr
+  const sidesWolf = getNeighbouringCoordinates(GAME_STATUS, [x, y])
+  sidesWolf.forEach(freeCell => {
+       const [x, y] = freeCell
+    if (GAME_STATUS.theGameContinues === false) {
+      return
+    } else {
+           if (matrix[x][y] === "rabbit") {
+            GAME_STATUS.TheResultOfTheGame = "gameOver"
+            gameStatusMessage(GAME_STATUS, "gameOver")
+            GAME_STATUS.theGameContinues = false
+            return
+          }
+}
+  })
+}
 const calculateDistance = ([x1, y1], [x2, y2]) =>
   Math.round(Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)))
 
 function getSidesLengthThreeAngle(GAME_STATUS, [x, y], character) {
-  const sidesWolf = getRabbitNextToWolfOrFreeBox(GAME_STATUS, [x, y])
-  const cordRabbit = findCordinateOfCharacter(GAME_STATUS, character)[0]
+  const sidesWolf = getFreeBoxNextToWolf(GAME_STATUS, [x, y])
+  const cordRabbit = getCordinatesOfCharacter(GAME_STATUS, character)[0]
   return sidesWolf.map(item => calculateDistance(item, cordRabbit))
 }
 
 function findNearestСell(GAME_STATUS, [x, y], character) {
+  
   const lengthCell = getSidesLengthThreeAngle(GAME_STATUS, [x, y], character)
-  const nearestСell = getRabbitNextToWolfOrFreeBox(GAME_STATUS, [x, y])
+  const nearestСell = getFreeBoxNextToWolf(GAME_STATUS, [x, y])
   const min = Math.min(...lengthCell)
   const index = lengthCell.indexOf(min)
-
+  
+  
   return nearestСell[index]
 }
 
 function moveWolvesOnNewBox(GAME_STATUS, character) {
   const matrix = GAME_STATUS.gameArr
-  const sideWolves = findCordinateOfCharacter(
+  const sideWolves = getCordinatesOfCharacter(
     GAME_STATUS,
     CHARACTER_PARAMS.wolf.name
   )
 
   sideWolves.forEach(cordinateWolves => {
+    
     const [XnearestСell, YnearestСell] = findNearestСell( GAME_STATUS, cordinateWolves, character )
     const [Xwolves, Ywolves] = cordinateWolves
     if (GAME_STATUS.theGameContinues === false) {
       return
     }
     clearGameBoard(GAME_STATUS)
+    getRabbitNextToWolf(GAME_STATUS, cordinateWolves)
     matrix[Xwolves][Ywolves] = FREE
     matrix[XnearestСell][YnearestСell] = CHARACTER_PARAMS.wolf.name
   })
 }
 function moveRabbit(GAME_STATUS, character, x, y) {
   const matrix = GAME_STATUS.gameArr
-  const [rabbitX, rabbitY] = findCordinateOfCharacter(GAME_STATUS, character)[0]
+  const [rabbitX, rabbitY] = getCordinatesOfCharacter(GAME_STATUS, character)[0]
 
   if (matrix[x][y] === FREE) {
     matrix[rabbitX][rabbitY] = FREE
@@ -226,7 +243,7 @@ function gameMovement(GAME_STATUS, character) {
     Object.values(directionButtons).map(arrow => {
       arrow.onclick = () => {
         const matrix = GAME_STATUS.gameArr
-        const [x, y] = findCordinateOfCharacter(GAME_STATUS, character)[0]
+        const [x, y] = getCordinatesOfCharacter(GAME_STATUS, character)[0]
         let newX = x
         let newY = y
         if (arrow.id === "left" + GAME_STATUS.numberBoard) {
