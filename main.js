@@ -150,9 +150,7 @@ function getRabbitNextToWolf(GAME_STATUS, [x, y]){
       return
     } else {
            if (matrix[x][y] === "rabbit") {
-            GAME_STATUS.TheResultOfTheGame = "gameOver"
-            gameStatusMessage(GAME_STATUS, "gameOver")
-            GAME_STATUS.theGameContinues = false
+            GAME_STATUS.theResultOfTheGame = "gameOver"
             return
           }
 }
@@ -206,21 +204,23 @@ function moveRabbit(GAME_STATUS, character, x, y) {
     matrix[rabbitX][rabbitY] = FREE
     matrix[x][y] = character
   } else if (matrix[x][y] === CHARACTER_PARAMS.wolf.name) {
-    GAME_STATUS.TheResultOfTheGame = "gameOver"
-    gameStatusMessage(GAME_STATUS, "gameOver")
-    GAME_STATUS.theGameContinues = false
-
+    GAME_STATUS.theResultOfTheGame = "gameOver"
     return
   } else if (matrix[x][y] === CHARACTER_PARAMS.home.name) {
-    GAME_STATUS.TheResultOfTheGame = "youWon"
-    gameStatusMessage(GAME_STATUS, "youWon")
-    GAME_STATUS.theGameContinues = false
-
+    GAME_STATUS.theResultOfTheGame = "youWon"
     return
   } else if (matrix[x][y] === CHARACTER_PARAMS.ban.name) {
     matrix[x][y] = CHARACTER_PARAMS.ban.name
     matrix[rabbitX][rabbitY] = character
   }
+}
+
+
+function drawMessage(GAME_STATUS){
+  if(GAME_STATUS.theResultOfTheGame !== null){
+    GAME_STATUS.theGameContinues = false
+    gameStatusMessage(GAME_STATUS, GAME_STATUS.theResultOfTheGame)
+ }
 }
 
 const moveIntervalWolves = (GAME_STATUS, character) => {
@@ -309,6 +309,7 @@ function drawGameArea(GAME_STATUS) {
       }
     }
   }
+  drawMessage(GAME_STATUS)
 }
 
 function gameStatusMessage(GAME_STATUS, status) {
@@ -345,7 +346,7 @@ function start(numberBoard) {
   const GAME_STATUS = {
     gameArr: matrix,
     theGameContinues: true,
-    TheResultOfTheGame: null,
+    theResultOfTheGame: null,
     numberBoard: numberBoard,
   }
 
