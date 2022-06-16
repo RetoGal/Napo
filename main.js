@@ -334,8 +334,7 @@ const GAME_STATUS = {
     numberBoard: numberBoard,
     interval : setInterval(() => {
                moveWolvesOnNewBox(GAME_STATUS, CHARACTER_PARAMS.rabbit.name)
-               drawGameArea(GAME_STATUS)
-    }, 2000),
+               drawGameArea(GAME_STATUS)},2000),
   }
  
   addGameStatusToObject(GAME_STATUS)
